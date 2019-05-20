@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>amo test form</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link href="signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+
+<div class="container">
+
+<div class="row">
+	<div class="col-12">
+		<form class="form-signin" action="/amo.php" method="post" onsubmit="event.preventDefault(); validate(this);">
+
+		<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+		<label for="inputName" class="sr-only">Name</label>
+		<input type="text" id="inputName" class="form-control" placeholder="Name" name="name" autofocus>
+
+		<label for="inputTel" class="sr-only">Telephone number</label>
+		<input type="tel" id="inputTel" class="form-control" placeholder="Telephone number" name="telnum" required>
+
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="email" required>
+
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+
+		</form>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-12">
+		<div id="errorMsg">
+		</div>
+	</div>
+</div>
+
+</div>
+
+<script>
+function validate(form) {
+	var formIsValid = true;
+	var elements = form.elements;
+	var errorMessageContainer = document.getElementById("errorMsg");
+	
+	clearError(errorMessageContainer);
+	
+	// check name
+	var nameElement = elements[0];
+	var name = nameElement.value;
+	var nameRegex = /^[^0-9]*$/;
+	
+	nameElement.classList.remove("error");
+	if (!nameRegex.test(name)) {
+		nameElement.classList.add("error");
+		printError(errorMessageContainer, "invalid name");
+		formIsValid = false;
+	}
+	
+	// check telephone number
+	var telephoneElement = elements[1];
+	var telephoneNum = telephoneElement.value;
+	var telephoneNumRegex = /^[0-9\-]+$/;
+	
+	telephoneElement.classList.remove("error");
+	if (!telephoneNumRegex.test(telephoneNum)) {
+		telephoneElement.classList.add("error");
+		printError(errorMessageContainer, "invalid telephone number");
+		formIsValid = false;
+	}
+	
+	// check email
+	var emailElement = elements[2];
+	var email = emailElement.value;
+	var emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	
+	emailElement.classList.remove("error");
+	if (!emailRegex.test(email)) {
+		emailElement.classList.add("error");
+		printError(errorMessageContainer, "invalid email");
+		formIsValid = false;
+	}
+	
+	if (formIsValid) {
+		form.submit();
+	}
+}
+
+// add error message to container
+function printError(container, message) {
+	container.className = "alert alert-danger";
+	var p = document.createElement("p");
+	var errorElement = document.createElement("span");
+	errorElement.className = "";
+	errorElement.innerHTML = message;
+	p.appendChild(errorElement);
+	container.appendChild(p);
+}
+
+// clear error messages from container
+function clearError(container) {
+	if (container.className === "alert alert-danger") {
+		container.className = "";
+		while (container.firstChild) {
+			container.removeChild(container.firstChild);
+		}
+	}
+}
+</script>
+
+</body>
+
+</html>
+
+
+
