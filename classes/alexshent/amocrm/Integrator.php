@@ -114,10 +114,7 @@ class Integrator {
 
         // get today leads        
         $today_leads = $this->api['lead']->get_filter_creation_date($from, $to);
-        
-        //echo "today leads\n";
-        //print_r($today_leads);
-        
+                
         $counter = [];
         $admin_users = $this->get_admin_users();
         
@@ -137,8 +134,6 @@ class Integrator {
             }
         }
         
-        //print_r($counter);
-        
         $min = count(current($counter));
         $min_user_id = key($counter);
         foreach ($counter as $uid => $c) {
@@ -147,9 +142,6 @@ class Integrator {
                 $min_user_id = $uid;
             }
         }
-        
-        //echo "min = $min\n";
-        //echo "min_user_id = $min_user_id\n";
         
         return $min_user_id;
     }
@@ -234,8 +226,9 @@ class Integrator {
     public function create_new_task($user_id, $text, $lead_id) {
         
         $today = getdate();
-        $format = $today['year'] . '-' . $today['mon'] . '-' . ($today['mday']+1) . ' ' . '00-00-00';
+        $format = $today['year'] . '-' . $today['mon'] . '-' . $today['mday'] . ' ' . '00-00-00';
         $date = \DateTime::createFromFormat('Y-m-d H-i-s', $format);
+        $date->add(new DateInterval('P1D'));
         $timestamp = $date->getTimestamp();
         
         $task_new = $this->api['task']->add(
